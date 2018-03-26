@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/sm.min.css">
+    <link rel="stylesheet" href="css/sm-extend.min.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <title>Title</title>
+
+</head>
+<body id="index-box">
+<!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
+    <div class="page-group" id="page-group">
+        <!-- 单个page ,第一个.page默认被展示-->
+        <div class="page">
+            <!-- 工具栏 -->
+            <nav class="bar bar-tab">
+                <a class="tab-item external active" href="#">
+                    <!--<span class="icon icon-home"></span>-->
+                    <span class="tab-label">我要挪车</span>
+                </a>
+                <a class="tab-item external" href="#">
+                    <!--<span class="icon icon-star"></span>-->
+                    <span class="tab-label">我要保险</span>
+                </a>
+                <a class="tab-item external" href="#">
+                    <!--<span class="icon icon-settings"></span>-->
+                    <span class="tab-label">挪车记录</span>
+                </a>
+            </nav>
+
+            <!-- 这里是页面内容区 -->
+            <div class="content">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">我的挪车</a>
+                    <a href="#tab2" class="tab-link button">我的车辆</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block">
+                                <p>This is tab 1 content</p>
+                            </div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block">
+                                <p>This is tab 2 content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/sm.min.js"></script>
+    <script src="js/sm-extend.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script>
+        $(function () {
+            new Vue({
+                el: "#page-group",
+                data: {
+                    scrTop:0,
+                    car_no:'',
+                    reason:'',
+                    address:'',
+                    submitStatus:false,
+                    detailState:false,
+                    bannerList:[],
+                    bannerLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_get_banner.html',
+                    postLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_post_data.html'
+                },
+                methods:{
+                    inputFocus:function(id){
+                       this.scrTop = $(id).offset().top
+                    }
+                },
+                mounted:function(){
+                    var This = this;
+                    // this.getBanner();
+                    // $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
+                    $(".swiper-container").swiper({
+                        pagination: ".swiper-pagination",
+                        autoplay:2000,
+                        loop : true,
+                    });
+                    // $('#page-group').scrollTo('#address',300)
+
+                    $(window).resize(function(){
+                       setTimeout(function(){
+                           $(".content").scrollTop(This.scrTop);
+                       },30)
+                    })
+                }
+            })
+        })
+    </script>
+</body>
+</html>

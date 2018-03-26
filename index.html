@@ -21,7 +21,6 @@
             <div class="swiper-pagination"></div>
         </div>
         <div class="formBox">
-            <p class="tip">留下联系方式，上门办卡</p>
             <div class="list-block">
                 <ul>
                     <!-- Text inputs -->
@@ -29,9 +28,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-name"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label"><b>*</b>姓名</div>
+                                <div class="item-title label"><b>*</b>车牌号码</div>
                                 <div class="item-input">
-                                    <input type="text" v-model="name" placeholder="请输入姓名">
+                                    <input type="text" v-model="car_no" placeholder="请拍照上传您的行驶证">
                                 </div>
                             </div>
                         </div>
@@ -40,9 +39,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-email"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label"><b>*</b>手机号：</div>
+                                <div class="item-title label"><b>*</b>车辆类型</div>
                                 <div class="item-input">
-                                    <input type="text" v-model="phone" placeholder="请输入正确的手机号">
+                                    <input type="text" v-model="car_style" placeholder="车辆类型">
                                 </div>
                             </div>
                         </div>
@@ -51,9 +50,9 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-email"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label"><b>*</b>单位名称：</div>
+                                <div class="item-title label"><b>*</b>所有人</div>
                                 <div class="item-input">
-                                    <input type="text" v-model="companyName" placeholder="非在职人员不受理">
+                                    <!--<input type="text" v-model="companyName" placeholder="非在职人员不受理">-->
                                 </div>
                             </div>
                         </div>
@@ -62,7 +61,32 @@
                         <div class="item-content">
                             <div class="item-media"><i class="icon icon-form-email"></i></div>
                             <div class="item-inner">
-                                <div class="item-title label"><b>*</b>住址：</div>
+                                <div class="item-title label"><b>*</b>手机号码</div>
+                                <div class="item-input">
+                                    <input type="text" v-model="phone" placeholder="请输入您的手机号码">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-email"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label"><b>*</b>验证码</div>
+                                <div class="item-input">
+                                    <input type="text" v-model="code" placeholder="请输入短信验证码">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-media"><i class="icon icon-form-email"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title label"><b>*</b>住址</div>
+                                <div class="item-input">
+                                    <input type="text" v-model="address" placeholder="请输入住址">
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -82,12 +106,12 @@
             new Vue({
                 el: "#index-box",
                 data: {
-                    name:'',
+                    car_no:'',
+                    car_style:'',
+                    code:'',
                     phone:'',
-                    companyName:'',
                     address:'',
-                    area:null,
-                    submitStatus:true,
+                    submitStatus:false,
                     detailState:false,
                     bannerList:[],
                     bannerLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_get_banner.html',
@@ -189,7 +213,7 @@
                 mounted: function () {
                     var This = this;
                     // this.getBanner();
-                    $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
+                    // $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
                     $(".swiper-container").swiper({
                         pagination: ".swiper-pagination",
                         autoplay:2000,
