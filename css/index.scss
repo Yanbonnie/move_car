@@ -1,0 +1,78 @@
+@import "_base.scss";
+$orange:#f49f4f;
+.wrap{
+    //visibility: hidden;
+}
+html,body{
+    width: 100%;
+    max-width: 750px;
+    height: 100%;
+    margin: 0 auto;
+    //min-height:REM(1039);
+    position: relative;
+    background: #fff !important;
+}
+img{
+    display: block;
+    width: 100%;
+}
+.hide{
+    display: none;
+}
+[v-cloak]{
+    display: none;
+}
+body{
+
+}
+#index-box {
+    .swiper-container{
+        padding-bottom: 0;
+    }
+    .list-block .item-content{
+        padding-left: 0;
+    }
+    .list-block{
+        margin: 0 auto;
+    }
+    .list-block .item-title.label{
+        font-size: 0.7rem;
+        b{
+            color: #ff503f;
+            margin-right: 10px;
+        }
+    }
+    .formBox{
+        .tip{
+            text-align: center;
+            font-size: 0.7rem;
+        }
+        input{
+            font-size: 0.7rem;
+            text-align: right;
+        }
+    }
+    .button-danger{
+        width: 180px;
+        margin: REM(30) auto;
+        line-height: REM(50);
+        height: REM(50);
+        background: #e75905;
+        &.gray{
+            background: #dedede;
+        }
+    }
+    .logo{
+        width: REM(250);
+        margin: 0 auto;
+        display: block;
+    }
+    .swiper-container-horizontal>.swiper-pagination{
+        bottom:0;
+        line-height: 20px;
+        height: 20px;
+    }
+    .swiper-pagination-bullet-active{
+        background-color: #e75905;
+    }
+}
