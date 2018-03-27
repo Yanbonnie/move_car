@@ -89,7 +89,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;保险公司</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="safe" placeholder="请选择保险公司名字" id="safe" @focus="inputFocus('#safe')">
+                                            <input type="text" id="insurance" v-model="safe" placeholder="请选择保险公司名字" id="safe" @focus="inputFocus('#safe')">
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                         <div class="item-input">
                                             <input type="text" v-model="code" placeholder="请输入短信验证码" id="code" @focus="inputFocus('#code')">
                                         </div>
-                                        <div><a href="javascript:;" class="button">获取验证码</a></div>
+                                        <div><a href="javascript:;" class="button" >{{code.txt}}</a></div>
                                     </div>
                                 </div>
                             </li>
@@ -153,13 +153,75 @@
                     man:'',
                     safe:'',
                     address:'',
+                    code:{
+                        txt:'获取验证码', //
+                        state:true,
+                    },
+                    is_binding:0,   //绑定状态，1为已绑定，0为未绑定，未绑定⽤用户⽆无权点击 其他⻚页⾯面，只能进入绑定页面
+                    // insurance_data:[],  //保险公司列表  name:保险公司名，code：保险公司代码
+                    insurance_data:['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
                     submitStatus:false,
                     detailState:false,
                     bannerList:[],
-                    bannerLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_get_banner.html',
+                    bannerLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_banner',
+                    getCodeLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_msgcode',
                     postLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_post_data.html'
                 },
                 methods:{
+                    getCode:function(){
+                        $.ajax({
+                            url:this.getCodeLink,
+                            data:{
+                                mobile:this.phone
+                            },
+                            type:'GET',
+                            dataType:'json',
+                            success:function(res){
+                                if(res.status == 0){
+
+                                }
+                            }
+                        })
+                    },
+                    goDetail:function(item){
+                        if(item.url){
+                            window.location.href = item.url;
+                        }
+                    },
+                    getBanner:function(){
+                        var This = this;
+                        $.ajax({
+                            url:this.bannerLink,
+                            data:{
+                                page_type:2
+                            },
+                            type:'GET',
+                            dataType:'json',
+                            success:function(res){
+                                if(res.status == 0 ){
+                                    This.bannerList = res.banner_data;
+                                    if(This.bannerList.length == 1){
+                                        $(".swiper-container").swiper();
+                                    }else{
+                                        setTimeout(function(){
+                                            var imgSrc = $('.swiper-slide').find('img');
+                                            var arrHeight = [];
+                                            for(var i = 0 ; i < imgSrc.length ; i++){
+                                                arrHeight.push(imgSrc.eq(i).height());
+                                            }
+                                            var arrHeight = arrHeight.sort(function(a,b){return a-b});
+                                            $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
+                                            $(".swiper-container").swiper({
+                                                pagination: ".swiper-pagination",
+                                                autoplay:2000,
+                                                loop : true,
+                                            });
+                                        },600)
+                                    }
+                                }
+                            }
+                        })
+                    },
                     inputFocus:function(id){
                        this.scrTop = $(id).offset().top
                     }
@@ -173,7 +235,20 @@
                         autoplay:2000,
                         loop : true,
                     });
-
+                    //保险公司数据
+                    $("#insurance").picker({
+                        toolbarTemplate: '<header class="bar bar-nav">\
+                              <button class="button button-link pull-right close-picker">确定</button>\
+                              <h1 class="title">选择保险公司</h1>\
+                              </header>',
+                        cols: [
+                            {
+                                textAlign: 'center',
+                                values: this.insurance_data
+                            }
+                        ]
+                    });
+                    //输入框自动滚动
                     $(window).resize(function(){
                        setTimeout(function(){
                            $(".content").scrollTop(This.scrTop);

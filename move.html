@@ -114,6 +114,40 @@
                     postLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_post_data.html'
                 },
                 methods:{
+                    getBanner:function(){
+                        var This = this;
+                        $.ajax({
+                            url:this.bannerLink,
+                            data:{
+                                page_type:1
+                            },
+                            type:'GET',
+                            dataType:'json',
+                            success:function(res){
+                                if(res.status == 0 ){
+                                    This.bannerList = res.data;
+                                    if(This.bannerList.length == 1){
+                                        $(".swiper-container").swiper();
+                                    }else{
+                                        setTimeout(function(){
+                                            var imgSrc = $('.swiper-slide').find('img');
+                                            var arrHeight = [];
+                                            for(var i = 0 ; i < imgSrc.length ; i++){
+                                                arrHeight.push(imgSrc.eq(i).height());
+                                            }
+                                            var arrHeight = arrHeight.sort(function(a,b){return a-b});
+                                            $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
+                                            $(".swiper-container").swiper({
+                                                pagination: ".swiper-pagination",
+                                                autoplay:2000,
+                                                loop : true,
+                                            });
+                                        },600)
+                                    }
+                                }
+                            }
+                        })
+                    },
                     inputFocus:function(id){
                        this.scrTop = $(id).offset().top
                     }
@@ -127,8 +161,6 @@
                         autoplay:2000,
                         loop : true,
                     });
-                    // $('#page-group').scrollTo('#address',300)
-
                     $(window).resize(function(){
                        setTimeout(function(){
                            $(".content").scrollTop(This.scrTop);
