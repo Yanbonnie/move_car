@@ -36,9 +36,9 @@
                 <!-- Slider -->
                 <div class="swiper-container" data-space-between='10' style="height: 200px;">
                     <div class="swiper-wrapper" id="swiper-wrapper">
-                        <!-- <div class="swiper-slide" @click="goDetail(item)" v-for="(item,index) in bannerList"><img :src="item.pic" alt=""></div> -->
-                        <div class="swiper-slide"><img src="images/banner.png" alt=""></div>
-                        <div class="swiper-slide"><img src="images/banner.png" alt=""></div>
+                         <div class="swiper-slide" @click="goDetail(item)" v-for="(item,index) in bannerList"><img :src="item.pic" alt=""></div>
+                        <!--<div class="swiper-slide"><img src="images/banner.png" alt=""></div>-->
+                        <!--<div class="swiper-slide"><img src="images/banner.png" alt=""></div>-->
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
@@ -53,9 +53,9 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;车牌号码</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="car_no" placeholder="请拍照上传您的行驶证" id="car_no"  @focus="inputFocus('#car_no')">
+                                            <input type="text" v-model="car_number" placeholder="请拍照上传您的行驶证" id="car_no"  @focus="inputFocus('#car_no')">
                                         </div>
-                                        <div>
+                                        <div @click="selectPic">
                                             <span class="iconfont icon-camera"></span>
                                         </div>
                                     </div>
@@ -67,7 +67,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;车辆类型</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="car_style" placeholder="车辆类型" id="car_style"  @focus="inputFocus('#car_style')">
+                                            <input type="text" v-model="car_type" placeholder="车辆类型" id="car_style"  @focus="inputFocus('#car_style')">
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;所有人</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="man" placeholder="" id="man"  @focus="inputFocus('#man')">
+                                            <input type="text" v-model="proprietor" placeholder="" id="man"  @focus="inputFocus('#man')">
                                         </div>
                                     </div>
                                 </div>
@@ -111,9 +111,9 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;验证码</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="code" placeholder="请输入短信验证码" id="code" @focus="inputFocus('#code')">
+                                            <input type="text" v-model="code.num" placeholder="请输入短信验证码" id="code" @focus="inputFocus('#code')">
                                         </div>
-                                        <div><a href="javascript:;" class="button" >{{code.txt}}</a></div>
+                                        <div><a @click="getCode" href="javascript:;" class="button" :class="[code.status ? '' : 'gray']" >{{code.txt}}</a></div>
                                     </div>
                                 </div>
                             </li>
@@ -146,29 +146,148 @@
                 el: "#page-group",
                 data: {
                     scrTop:0,
-                    car_no:'',
-                    car_style:'',
-                    code:'',
                     phone:'',
-                    man:'',
                     safe:'',
-                    address:'',
                     code:{
+                        num:'',
                         txt:'获取验证码', //
-                        state:true,
+                        status:true,
                     },
+                    car_number:'',   //车牌号
+                    car_type:'',     //车辆类型
+                    proprietor:'',   //所有人
+                    address:'',      //地址
+                    Time:5,
                     is_binding:0,   //绑定状态，1为已绑定，0为未绑定，未绑定⽤用户⽆无权点击 其他⻚页⾯面，只能进入绑定页面
-                    // insurance_data:[],  //保险公司列表  name:保险公司名，code：保险公司代码
-                    insurance_data:['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
-                    submitStatus:false,
+                    insurance_data:[],  //保险公司列表  name:保险公司名，code：保险公司代码
+                    insurance:[],       //保险公司数据
+                    // insurance_data:['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
+                    submitStatus:true,
                     detailState:false,
                     bannerList:[],
                     bannerLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_banner',
                     getCodeLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_msgcode',
-                    postLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_post_data.html'
+                    uploadpicLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_uploadpic',
+                    binding:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_binding'
                 },
                 methods:{
+                    //绑定车辆
+                    bindingHandle:function(){
+                        if(!this.submitStatus) return;
+                        var This = this;
+                        //处理保险公司数据
+                        for(var i = 0 ; i < this.insurance.length; i++){
+                            if(this.insurance[i].name == $('#safe').val()){
+                                this.safe = this.insurance[i].code;
+                            }
+                        }
+                        if(!this.car_number){
+                            $.toast("车牌号不能为空");
+                            return;
+                        }
+                        if(!this.car_type){
+                            $.toast("车辆类型不能为空");
+                            return;
+                        }
+                        if(!this.proprietor){
+                            $.toast("所有人不能为空");
+                            return;
+                        }
+                        if(!this.safe){
+                            $.toast("保险公司不能为空");
+                            return;
+                        }
+                        if(!this.phone){
+                            $.toast("手机号码不能为空");
+                            return;
+                        }
+                        if(!this.code.num){
+                            $.toast("验证码不能为空");
+                            return;
+                        }
+                        if(!this.address){
+                            $.toast("地址不能为空");
+                            return;
+                        }
+                        this.submitStatus = false;
+                        $.ajax({
+                            url:this.binding,
+                            data:{
+                                car_number:this.car_number,
+                                car_type:this.car_type,
+                                proprietor:this.proprietor,
+                                insurance_code:this.safe,
+                                mobile:this.phone,
+                                code:this.code.num,
+                                address:this.address
+                            },
+                            type:'POST',
+                            dataType:'json',
+                            success:function(res){
+                                if(res.status == 0){
+                                    $.toast("提交成功");
+                                    This.submitStatus = true;
+                                }
+                            }
+                        })
+                    },
+                    //选择图片
+                    selectPic:function () {
+                        var This = this;
+                        var localIds = null;
+                        var serverId = null;
+                        wx.chooseImage({
+                            count: 1, // 默认9
+                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                            success: function (res) {
+                                localIds = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                wx.uploadImage({
+                                    localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                                    success: function (res2) {
+                                        serverId = res2.serverId; // 返回图片的服务器端ID
+                                        This.uploadpic(serverId)
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    //上传图片
+                    uploadpic:function(serverId){
+                        var This = this;
+                        $.showPreloader(['识别中...']);
+                        $.ajax({
+                            url:this.uploadpicLink,
+                            data:{
+                                page_type:1,
+                                serverId:serverId
+                            },
+                            type:'POST',
+                            dataType:'json',
+                            success:function(res){
+                                $.hidePreloader();
+                                if(res.status == 0){
+                                    This.car_number = res.data.car_number;
+                                    This.car_type = res.data.car_type;
+                                    This.proprietor = res.data.proprietor;
+                                    This.address = res.data.address;
+                                }
+                            }
+                        })
+                    },
+                    //获取验证码
                     getCode:function(){
+                        var This = this;
+                        if(!this.phone){
+                            $.toast("请输入手机号码");
+                            return false;
+                        }
+                        if(!(/^0?1[3|4|5|7|8][0-9]\d{8}$/.test(this.phone))){
+                            $.toast("手机号码格式不正确");
+                            return false;
+                        }
+                        if(!this.code.status) return;
                         $.ajax({
                             url:this.getCodeLink,
                             data:{
@@ -178,10 +297,28 @@
                             dataType:'json',
                             success:function(res){
                                 if(res.status == 0){
-
+                                    This.Time = 60;
+                                    This.code.status = false;
+                                    This.countDown();
                                 }
                             }
                         })
+                    },
+                    //倒计时
+                    countDown:function(){
+                        console.log(this.Time)
+                        var This = this;
+                        if(this.Time > 1){
+                            this.Time = this.Time-1;
+                            this.code.txt = '获取验证码('+this.Time+'s)';
+                            setTimeout(function(){
+                                This.countDown();
+                            },1000)
+                        }else{
+                            this.Time = 0;
+                            this.code.txt = '获取验证码';
+                            this.code.status = true;
+                        }
                     },
                     goDetail:function(item){
                         if(item.url){
@@ -200,6 +337,10 @@
                             success:function(res){
                                 if(res.status == 0 ){
                                     This.bannerList = res.banner_data;
+                                    This.insurance_data = res.insurance_data.map(function(item){
+                                        return item.name
+                                    });
+                                    This.insurance = res.insurance_data;
                                     if(This.bannerList.length == 1){
                                         $(".swiper-container").swiper();
                                     }else{
@@ -228,13 +369,13 @@
                 },
                 mounted:function(){
                     var This = this;
-                    // this.getBanner();
+                    this.getBanner();
                     // $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
-                    $(".swiper-container").swiper({
-                        pagination: ".swiper-pagination",
-                        autoplay:2000,
-                        loop : true,
-                    });
+                    // $(".swiper-container").swiper({
+                    //     pagination: ".swiper-pagination",
+                    //     autoplay:2000,
+                    //     loop : true,
+                    // });
                     //保险公司数据
                     $("#insurance").picker({
                         toolbarTemplate: '<header class="bar bar-nav">\
@@ -244,10 +385,12 @@
                         cols: [
                             {
                                 textAlign: 'center',
-                                values: this.insurance_data
+                                values: This.insurance_data
                             }
                         ]
                     });
+
+
                     //输入框自动滚动
                     $(window).resize(function(){
                        setTimeout(function(){

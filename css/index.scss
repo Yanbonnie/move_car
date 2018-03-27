@@ -42,6 +42,10 @@ body{
       }
       .button{
         font-size:0.65rem;
+        &.gray{
+          border: 1px #ccc solid;
+          color: #ccc;
+        }
       }
     }
     .button.button-submit{
@@ -49,6 +53,9 @@ body{
         line-height: 2rem;
         margin: 0 auto;
         width: 15rem;
+      &.gray{
+        background: #ccc;
+      }
     }
   .tip{
     color:#ff503f;
