@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ec6a90bc-1bbf-4b5a-a94e-15e5d8a7fafd" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/bind.html" afterPath="$PROJECT_DIR$/bind.html" />
-      <change beforePath="$PROJECT_DIR$/css/.sass-cache/2f8cb865e6998c392f500427bbd338e23f82e1b8/index.scssc" afterPath="$PROJECT_DIR$/css/.sass-cache/2f8cb865e6998c392f500427bbd338e23f82e1b8/index.scssc" />
-      <change beforePath="$PROJECT_DIR$/css/index.css" afterPath="$PROJECT_DIR$/css/index.css" />
-      <change beforePath="$PROJECT_DIR$/css/index.css.map" afterPath="$PROJECT_DIR$/css/index.css.map" />
-      <change beforePath="$PROJECT_DIR$/css/index.scss" afterPath="$PROJECT_DIR$/css/index.scss" />
-    </list>
+    <list default="true" id="ec6a90bc-1bbf-4b5a-a94e-15e5d8a7fafd" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -30,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bind.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bind.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bind.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="507">
-              <caret line="39" column="96" lean-forward="true" selection-start-line="39" selection-start-column="99" selection-end-line="40" selection-end-column="96" />
+            <state relative-caret-position="318">
+              <caret line="44" column="30" lean-forward="true" selection-start-line="44" selection-start-column="30" selection-end-line="44" selection-end-column="30" />
               <folding>
                 <marker date="1522160319050" expanded="true" signature="19332:19536" ph="..." />
               </folding>
@@ -42,11 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bind.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="bind.html" pinned="false" current-in-tab="true">
         <entry file="file://E:/jiancheng/public/themes/simpleboot3/weixin/index/bind.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="360" column="21" lean-forward="false" selection-start-line="360" selection-start-column="21" selection-end-line="360" selection-end-column="21" />
+            <state relative-caret-position="1227">
+              <caret line="267" column="50" lean-forward="true" selection-start-line="267" selection-start-column="50" selection-end-line="267" selection-end-column="50" />
               <folding>
                 <marker date="1522160242144" expanded="true" signature="19563:19779" ph="..." />
               </folding>
@@ -185,13 +179,13 @@
       <option name="presentableId" value="Default" />
       <updated>1522065214107</updated>
       <workItem from="1522065215440" duration="6703000" />
-      <workItem from="1522151019021" duration="8309000" />
+      <workItem from="1522151019021" duration="9093000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15012000" />
+    <option name="totallyTimeSpent" value="15796000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -308,22 +302,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://E:/jiancheng/public/themes/simpleboot3/weixin/index/bind.html">
+    <entry file="file://$PROJECT_DIR$/bind.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="360" column="21" lean-forward="false" selection-start-line="360" selection-start-column="21" selection-end-line="360" selection-end-column="21" />
+        <state relative-caret-position="318">
+          <caret line="44" column="30" lean-forward="true" selection-start-line="44" selection-start-column="30" selection-end-line="44" selection-end-column="30" />
           <folding>
-            <marker date="1522160242144" expanded="true" signature="19563:19779" ph="..." />
+            <marker date="1522160319050" expanded="true" signature="19332:19536" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bind.html">
+    <entry file="file://E:/jiancheng/public/themes/simpleboot3/weixin/index/bind.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="507">
-          <caret line="39" column="96" lean-forward="true" selection-start-line="39" selection-start-column="99" selection-end-line="40" selection-end-column="96" />
+        <state relative-caret-position="1227">
+          <caret line="267" column="50" lean-forward="true" selection-start-line="267" selection-start-column="50" selection-end-line="267" selection-end-column="50" />
           <folding>
-            <marker date="1522160319050" expanded="true" signature="19332:19536" ph="..." />
+            <marker date="1522160242144" expanded="true" signature="19563:19779" ph="..." />
           </folding>
         </state>
       </provider>
