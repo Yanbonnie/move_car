@@ -51,15 +51,32 @@ body{
         width: 15rem;
     }
   .tip{
+    color:#ff503f;
     .icon-warning-o{
       margin-right: 5px;
       margin-left: 9%;
       font-size: 1rem;
       position: relative;
       top: 2px;
+      color:#ff503f;
     }
     p{
       line-height: 2rem;
     }
   }
+}
+.content-block{
+  padding:0 .25rem !important;
+  #tab1,#tab2{
+    .card-footer{
+      text-align:center;
+      color:#ff503f;
+      display:block;
+    }
+  }
+}
+
+.modal-title+.modal-text{
+  max-height:15rem;
+  overflow:auto;
 }

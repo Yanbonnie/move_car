@@ -86,7 +86,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <p class="tip"><span class="iconfont icon-warning-o"></span>服务说明</p>
+                        <p class="tip"><span class="iconfont icon-warning-o" id="tip"></span>服务说明</p>
                     </div>
                     <a href="javascript:;" class="button button-fill button-submit" :class="[submitStatus ? '':'gray']" >提交</a>
 
@@ -134,6 +134,9 @@
                            $(".content").scrollTop(This.scrTop);
                        },30)
                     })
+                    $(document).on('click','.tip', function () {
+                        $.alert('Here goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert text', '服务说明');
+                    });
                 }
             })
         })
