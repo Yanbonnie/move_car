@@ -87,3 +87,13 @@ body{
   max-height:15rem;
   overflow:auto;
 }
+
+.no-message{
+  p{
+    text-align:center;
+    margin:0;
+    &.icon-cry{
+      font-size:3rem;
+    }
+  }
+}

@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="css/sm.min.css">
     <link rel="stylesheet" href="css/sm-extend.min.css">
     <link rel="stylesheet" href="font/iconfont.css">
-    <title>Title</title>
-
+    <title>绑定车辆</title>
 </head>
-<body id="index-box">
+<body id="index-box" v-cloak>
 <!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
     <div class="page-group" id="page-group">
         <!-- 单个page ,第一个.page默认被展示-->
@@ -25,7 +24,7 @@
                     <!--<span class="icon icon-star"></span>-->
                     <span class="tab-label">我要保险</span>
                 </a>
-                <a class="tab-item external" href="#">
+                <a class="tab-item external" href="list.html">
                     <!--<span class="icon icon-settings"></span>-->
                     <span class="tab-label">挪车记录</span>
                 </a>
@@ -53,7 +52,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;车牌号码</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="car_number" placeholder="请拍照上传您的行驶证" id="car_no"  @focus="inputFocus('#car_no')">
+                                            <input type="text" readonly v-model="car_number" placeholder="请拍照上传您的行驶证" id="car_no"  @focus="inputFocus('#car_no')">
                                         </div>
                                         <div @click="selectPic">
                                             <span class="iconfont icon-camera"></span>
@@ -67,7 +66,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;车辆类型</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="car_type" placeholder="车辆类型" id="car_style"  @focus="inputFocus('#car_style')">
+                                            <input type="text" readonly v-model="car_type" placeholder="车辆类型" id="car_style"  @focus="inputFocus('#car_style')">
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +77,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;所有人</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="proprietor" placeholder="" id="man"  @focus="inputFocus('#man')">
+                                            <input type="text" readonly v-model="proprietor" placeholder="" id="man"  @focus="inputFocus('#man')">
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +88,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;保险公司</div>
                                         <div class="item-input">
-                                            <input type="text" id="insurance" v-model="safe" placeholder="请选择保险公司名字" id="safe" @focus="inputFocus('#safe')">
+                                            <input type="text" id="insurance" readonly v-model="safe" placeholder="请选择保险公司名字" id="safe" @focus="inputFocus('#safe')">
                                         </div>
                                     </div>
                                 </div>
@@ -123,7 +122,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;住址</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="address" placeholder="请输入住址" id="address" @focus="inputFocus('#address')">
+                                            <input type="text" v-model="address" readonly placeholder="请输入住址" id="address" @focus="inputFocus('#address')">
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +162,6 @@
                     insurance:[],       //保险公司数据
                     // insurance_data:['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
                     submitStatus:true,
-                    detailState:false,
                     bannerList:[],
                     bannerLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_banner',
                     getCodeLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_msgcode',
@@ -330,7 +328,7 @@
                         $.ajax({
                             url:this.bannerLink,
                             data:{
-                                page_type:2
+                                page_type:1
                             },
                             type:'GET',
                             dataType:'json',
@@ -370,7 +368,6 @@
                 mounted:function(){
                     var This = this;
                     this.getBanner();
-                    // $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
                     // $(".swiper-container").swiper({
                     //     pagination: ".swiper-pagination",
                     //     autoplay:2000,
@@ -389,8 +386,6 @@
                             }
                         ]
                     });
-
-
                     //输入框自动滚动
                     $(window).resize(function(){
                        setTimeout(function(){

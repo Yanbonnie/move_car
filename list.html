@@ -7,17 +7,16 @@
     <link rel="stylesheet" href="css/sm.min.css">
     <link rel="stylesheet" href="css/sm-extend.min.css">
     <link rel="stylesheet" href="font/iconfont.css">
-    <title>Title</title>
-
+    <title>挪车记录</title>
 </head>
-<body id="index-box">
+<body id="index-box" v-cloak>
 <!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
     <div class="page-group" id="page-group">
         <!-- 单个page ,第一个.page默认被展示-->
         <div class="page">
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
-                <a class="tab-item external " href="#">
+                <a class="tab-item external " href="move.html">
                     <!--<span class="icon icon-home"></span>-->
                     <span class="tab-label">我要挪车</span>
                 </a>
@@ -34,60 +33,54 @@
             <!-- 这里是页面内容区 -->
             <div class="content" >
                 <div class="buttons-tab">
-                    <a href="#tab1" class="tab-link  button">我的挪车</a>
-                    <a href="#tab2" class="tab-link active button">我的车辆</a>
+                    <a href="#tab1" class="tab-link  button" @click="tabIndex = 1">我的挪车</a>
+                    <a href="#tab2" class="tab-link active button" @click="tabIndex = 2">我的车辆</a>
                 </div>
                 <div class="content-block">
                     <div class="tabs">
                         <div id="tab1" class="tab ">
                             <div class="content-block">
-                                <div class="card">
-                                    <div class="card-header">车牌号码:<span>粤A43N42</span></div>
+                                <div class="card" v-show="!loading && mymove.length == 0">
                                     <div class="card-content">
-                                      <div class="card-content-inner">
-                                          <p>挪车原因：停车被挡</p>
-                                          <p>挪车地点：广州省广州市广州大道中</p>
-                                          <p>挪车时间：2018年3月25日16:32:92</p>
+                                      <div class="card-content-inner no-message">
+                                          <p class="iconfont icon-cry"></p>
+                                          <p>暂无数据</p>
                                       </div>
                                     </div>
-                                    <div class="card-footer">删除</div>
                                 </div>
-                                <div class="card">
-                                    <div class="card-header">车牌号码:<span>粤A43N42</span></div>
+                                <div class="card" v-for="(item,index) in mymove" :key="index">
+                                    <div class="card-header">车牌号码:<span>{{item.car_number}}</span></div>
                                     <div class="card-content">
                                       <div class="card-content-inner">
-                                          <p>挪车原因：停车被挡</p>
-                                          <p>挪车地点：广州省广州市广州大道中</p>
-                                          <p>挪车时间：2018年3月25日16:32:92</p>
+                                          <p>挪车原因：{{item.reason}}</p>
+                                          <p>挪车地点：{{item.address}}</p>
+                                          <p>挪车时间：{{item.time}}</p>
                                       </div>
                                     </div>
-                                    <div class="card-footer">删除</div>
+                                    <div class="card-footer" @click="delMymoveHandle(item)">删除</div>
                                 </div>
                             </div>
                         </div>
                         <div id="tab2" class="tab active">
                             <div class="content-block">
-                                <div class="card">
-                                    <div class="card-header">车牌号码:<span>粤A43N42</span></div>
+                                <div class="card" v-show="!loading && mycarlog.length == 0">
                                     <div class="card-content">
-                                      <div class="card-content-inner">
-                                          <p>挪车原因：停车被挡</p>
-                                          <p>挪车地点：广州省广州市广州大道中</p>
-                                          <p>挪车时间：2018年3月25日16:32:92</p>
+                                      <div class="card-content-inner no-message">
+                                          <p class="iconfont icon-cry"></p>
+                                          <p>暂无数据</p>
                                       </div>
                                     </div>
-                                    <div class="card-footer">删除</div>
                                 </div>
-                                <div class="card">
-                                    <div class="card-header">车牌号码:<span>粤A43N42</span></div>
+                                <div class="card" v-for="(item,index) in mycarlog" :key="index"> 
+                                    <div class="card-header">车牌号码:<span>{{item.car_number}}</span></div>
                                     <div class="card-content">
                                       <div class="card-content-inner">
-                                          <p>挪车原因：停车被挡</p>
-                                          <p>挪车地点：广州省广州市广州大道中</p>
-                                          <p>挪车时间：2018年3月25日16:32:92</p>
+                                          <p>挪车原因：{{item.reason}}</p>
+                                          <p>挪车地点：{{item.address}}</p>
+                                          <p>挪车时间：{{item.time}}</p>
                                       </div>
                                     </div>
-                                    <div class="card-footer">删除</div>
+                                    <div class="card-footer" @click="delMyCarLogHandle(item)">删除</div>
                                 </div>
                             </div>
                             </div>
@@ -108,36 +101,110 @@
                 el: "#page-group",
                 data: {
                     scrTop:0,
-                    car_no:'',
-                    reason:'',
-                    address:'',
-                    submitStatus:false,
-                    detailState:false,
-                    bannerList:[],
-                    bannerLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_get_banner.html',
-                    postLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_post_data.html'
+                    mymove:[],
+                    mycarlog:[],
+                    page1:1,
+                    page2:1,
+                    tabIndex:1,
+                    loading:true,
+                    myMoveLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_mymove',
+                    delMymoveLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/del_mymove',
+                    myCarlogLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_mycarlog',
+                    delMyCarLogLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/del_mycarlog'
                 },
                 methods:{
-                    inputFocus:function(id){
-                       this.scrTop = $(id).offset().top
+                    //删除我的车辆挪车记录
+                    delMyCarLogHandle(item){
+                        var This = this;
+                        $.confirm('确认删除?', function () {
+                              $.ajax({
+                                url:This.delMyCarLogLink,
+                                data:{
+                                    code:item.code
+                                },
+                                type:'POST',
+                                dataType:'json',
+                                success:function(res){                                    
+                                    if(res.status == 0){
+                                        $.toast('删除成功');
+                                        This.getMyCarlog();
+                                    }
+                                }
+                            })
+                        });
+                    },
+                    //删除我的挪车记录
+                    delMymoveHandle(item){
+                        var This = this;
+                        $.confirm('确认删除?', function () {
+                              // $.alert('You clicked Ok button');
+                              $.ajax({
+                                url:This.delMymoveLink,
+                                data:{
+                                    code:item.code
+                                },
+                                type:'POST',
+                                dataType:'json',
+                                success:function(res){
+                                    This.loading = false;
+                                    if(res.status == 0){
+                                        This.getMyMove();
+                                    }
+                                }
+                              })
+                        });
+                    },
+                    //我的挪车
+                    getMyMove:function(){         
+                        var This = this;           
+                        if(this.tabIndex == 1){
+                            this.loading = true;
+                            $.showPreloader();
+                        }                       
+                        
+                        $.ajax({
+                            url:this.myMoveLink,
+                            data:{
+                                page:this.page1
+                            },
+                            type:'GET',
+                            dataType:'json',
+                            success:function(res){
+                                This.loading = false;
+                                $.hidePreloader();
+                                if(res.status == 0){
+                                    This.mymove = res.data;
+                                }
+                            }
+                        })
+                    },
+                    //我的车辆挪车记录
+                    getMyCarlog:function(){
+                        var This = this;
+                        if(this.tabIndex == 2){
+                            $.showPreloader();
+                            this.loading = true;
+                        } 
+                        $.ajax({
+                            url:this.myCarlogLink,
+                            data:{
+                                page:this.page2
+                            },
+                            type:'GET',
+                            dataType:'json',
+                            success:function(res){
+                                This.loading = false;
+                                $.hidePreloader();
+                                if(res.status == 0){
+                                    This.mycarlog = res.data;
+                                }
+                            }
+                        })
                     }
                 },
                 mounted:function(){
-                    var This = this;
-                    // this.getBanner();
-                    // $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
-                    $(".swiper-container").swiper({
-                        pagination: ".swiper-pagination",
-                        autoplay:2000,
-                        loop : true,
-                    });
-                    // $('#page-group').scrollTo('#address',300)
-
-                    $(window).resize(function(){
-                       setTimeout(function(){
-                           $(".content").scrollTop(This.scrTop);
-                       },30)
-                    })
+                    this.getMyMove();
+                    this.getMyCarlog();
                 }
             })
         })

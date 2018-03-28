@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="css/sm.min.css">
     <link rel="stylesheet" href="css/sm-extend.min.css">
     <link rel="stylesheet" href="font/iconfont.css">
-    <title>Title</title>
-
+    <title>我要挪车</title>
+     <style type="text/css">
+        [v-cloak] {
+          display: none;
+        }
+    </style>
 </head>
-<body id="index-box">
+<body id="index-box" v-cloak>
 <!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
     <div class="page-group" id="page-group">
         <!-- 单个page ,第一个.page默认被展示-->
@@ -25,7 +29,7 @@
                     <!--<span class="icon icon-star"></span>-->
                     <span class="tab-label">我要保险</span>
                 </a>
-                <a class="tab-item external" href="#">
+                <a class="tab-item external" href="list.html">
                     <!--<span class="icon icon-settings"></span>-->
                     <span class="tab-label">挪车记录</span>
                 </a>
@@ -50,10 +54,10 @@
                             <li>
                                 <div class="item-content">
                                     <div class="item-media"><i class="icon icon-form-name"></i></div>
-                                    <div class="item-inner">
+                                    <div class="item-inner"  @click.stop="selectPic">
                                         <div class="item-title label"><b>*</b>&nbsp;车牌号码</div>
                                         <div class="item-input">
-                                            <input type="text" v-model="car_no" placeholder="请拍照上传您的行驶证" id="car_no"  @focus="inputFocus('#car_no')">
+                                            <input type="text" v-model="car_number" readonly placeholder="请拍照上传需挪车辆" id="car_no"  @focus="inputFocus('#car_no')">
                                         </div>
                                         <div>
                                             <span class="iconfont icon-camera"></span>
@@ -104,28 +108,131 @@
                 el: "#page-group",
                 data: {
                     scrTop:0,
-                    car_no:'',
+                    car_number:'',   //车牌号
                     reason:'',
                     address:'',
-                    submitStatus:false,
-                    detailState:false,
+                    scene_pic:'',
+                    is_binding:0,   //绑定状态，1为已绑定，0为未绑定，未绑定⽤用户⽆无权点击 其他⻚页⾯面，只能进入绑定页面
+                    submitStatus:true,
                     bannerList:[],
-                    bannerLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_get_banner.html',
-                    postLink:'https://xnt.xhwxpos.com/pingan/index.php/weixin/index/ajax_post_data.html'
+                    bannerLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_banner',
+                    uploadpicLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_uploadpic',
+                    moveCarLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_move_car'
                 },
                 methods:{
+                    //绑定车辆
+                    bindingHandle:function(){
+                        if(!this.submitStatus) return;
+                        var This = this;
+                        if(!this.car_number){
+                            $.toast("车牌号不能为空");
+                            return;
+                        }
+                        if(!this.reason){
+                            $.toast("原因不能为空");
+                            return;
+                        }
+                        if(!this.scene_pic){
+                            $.toast("请拍照上传需挪车辆图片");
+                            return;
+                        }
+                        if(!this.address){
+                            $.toast("地址不能为空");
+                            return;
+                        }
+                        this.submitStatus = false;
+                        $.ajax({
+                            url:this.moveCarLink,
+                            data:{
+                                car_number:this.car_number,
+                                reason:this.reason,
+                                scene_pic:this.scene_pic,
+                                address:this.address
+                            },
+                            type:'POST',
+                            dataType:'json',
+                            success:function(res){
+                                if(res.status == 0){
+                                    $.toast("提交成功");
+                                    This.submitStatus = true;
+                                }
+                            }
+                        })
+                    },
+                    //选择图片
+                    selectPic:function () {
+                        var This = this;
+                        var localIds = null;
+                        var serverId = null;
+                        wx.chooseImage({
+                            count: 1, // 默认9
+                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                            success: function (res) {
+                                localIds = res.localIds[0]; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                                wx.uploadImage({
+                                    localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                                    success: function (res2) {
+                                        serverId = res2.serverId; // 返回图片的服务器端ID
+                                        This.uploadpic(serverId)
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    //上传图片
+                    uploadpic:function(serverId){
+                        var This = this;
+                        $.showPreloader(['识别中...']);
+                        $.ajax({
+                            url:this.uploadpicLink,
+                            data:{
+                                page_type:2,
+                                serverId:serverId
+                            },
+                            type:'POST',
+                            dataType:'json',
+                            success:function(res){
+                                $.hidePreloader();
+                                if(res.status == 0){
+                                    This.car_number = res.data.car_number;
+                                    This.scene_pic = res.data.scene_pic;
+                                }else{
+                                    $.toast("上传失败");
+                                }
+                            }
+                        })
+                    },
+                    //获取位置
+                    getLocation:function(){
+                        wx.getLocation({
+                            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                            success: function (res) {
+                                var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                                var speed = res.speed; // 速度，以米/每秒计
+                                var accuracy = res.accuracy; // 位置精度
+                            }
+                        });
+                    },
+                    goDetail:function(item){
+                        if(item.url){
+                            window.location.href = item.url;
+                        }
+                    },
                     getBanner:function(){
                         var This = this;
                         $.ajax({
                             url:this.bannerLink,
                             data:{
-                                page_type:1
+                                page_type:2
                             },
                             type:'GET',
                             dataType:'json',
                             success:function(res){
                                 if(res.status == 0 ){
-                                    This.bannerList = res.data;
+                                    This.bannerList = res.banner_data;
                                     if(This.bannerList.length == 1){
                                         $(".swiper-container").swiper();
                                     }else{
@@ -154,8 +261,7 @@
                 },
                 mounted:function(){
                     var This = this;
-                    // this.getBanner();
-                    // $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
+                    this.getBanner();
                     $(".swiper-container").swiper({
                         pagination: ".swiper-pagination",
                         autoplay:2000,
