@@ -87,7 +87,7 @@
                         </ul>
                         <p class="tip"><span class="iconfont icon-warning-o" id="tip"></span>服务说明</p>
                     </div>
-                    <a href="javascript:;" class="button button-fill button-submit" :class="[submitStatus ? '':'gray']" >提交</a>
+                    <a href="javascript:;" class="button button-fill button-submit" @click="bindingHandle" :class="[submitStatus ? '':'gray']" >提交</a>
 
                 </div>
             </div>
