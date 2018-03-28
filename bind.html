@@ -9,22 +9,22 @@
     <link rel="stylesheet" href="font/iconfont.css">
     <title>绑定车辆</title>
 </head>
-<body id="index-box" v-cloak>
+<body id="index-box">
 <!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
     <div class="page-group" id="page-group">
         <!-- 单个page ,第一个.page默认被展示-->
         <div class="page">
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
-                <a class="tab-item external active" href="#">
+                <a class="tab-item external" href="javascript:;" @click="go('move.html')">
                     <!--<span class="icon icon-home"></span>-->
                     <span class="tab-label">我要挪车</span>
                 </a>
-                <a class="tab-item external" href="#">
+                <a class="tab-item external" href="javascript:;" @click="go('save.html')">
                     <!--<span class="icon icon-star"></span>-->
                     <span class="tab-label">我要保险</span>
                 </a>
-                <a class="tab-item external" href="list.html">
+                <a class="tab-item external" href="javascript:;" @click="go('listpage.html')">
                     <!--<span class="icon icon-settings"></span>-->
                     <span class="tab-label">挪车记录</span>
                 </a>
@@ -169,6 +169,13 @@
                     binding:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_binding'
                 },
                 methods:{
+                    go(params){
+                        if(this.is_binding==0){
+                            $.toast("请先绑定车辆");
+                        }else{
+                            window.location.href=params;
+                        }
+                    },
                     //绑定车辆
                     bindingHandle:function(){
                         if(!this.submitStatus) return;

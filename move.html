@@ -8,28 +8,23 @@
     <link rel="stylesheet" href="css/sm-extend.min.css">
     <link rel="stylesheet" href="font/iconfont.css">
     <title>我要挪车</title>
-     <style type="text/css">
-        [v-cloak] {
-          display: none;
-        }
-    </style>
 </head>
-<body id="index-box" v-cloak>
-<!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
+<body id="index-box">
+    <!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
     <div class="page-group" id="page-group">
         <!-- 单个page ,第一个.page默认被展示-->
         <div class="page">
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
-                <a class="tab-item external active" href="#">
+                <a class="tab-item external active" href="javascript:;">
                     <!--<span class="icon icon-home"></span>-->
                     <span class="tab-label">我要挪车</span>
                 </a>
-                <a class="tab-item external" href="#">
+                <a class="tab-item external" href="save.html">
                     <!--<span class="icon icon-star"></span>-->
                     <span class="tab-label">我要保险</span>
                 </a>
-                <a class="tab-item external" href="list.html">
+                <a class="tab-item external" href="listpage.html">
                     <!--<span class="icon icon-settings"></span>-->
                     <span class="tab-label">挪车记录</span>
                 </a>
@@ -40,9 +35,9 @@
                 <!-- Slider -->
                 <div class="swiper-container" data-space-between='10' style="height: 200px;">
                     <div class="swiper-wrapper" id="swiper-wrapper">
-                        <!-- <div class="swiper-slide" @click="goDetail(item)" v-for="(item,index) in bannerList"><img :src="item.pic" alt=""></div> -->
-                        <div class="swiper-slide"><img src="images/banner.png" alt=""></div>
-                        <div class="swiper-slide"><img src="images/banner.png" alt=""></div>
+                        <div class="swiper-slide" @click="goDetail(item)" v-for="(item,index) in bannerList"><img :src="item.pic" alt=""></div>
+                        <!-- <div class="swiper-slide"><img src="images/banner.png" alt=""></div>
+                        <div class="swiper-slide"><img src="images/banner.png" alt=""></div> -->
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
@@ -233,6 +228,9 @@
                             success:function(res){
                                 if(res.status == 0 ){
                                     This.bannerList = res.banner_data;
+                                    if(res.is_binding == 0){
+                                        window.location.href = 'bind.html';
+                                    }
                                     if(This.bannerList.length == 1){
                                         $(".swiper-container").swiper();
                                     }else{
