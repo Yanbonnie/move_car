@@ -97,3 +97,23 @@ body{
     }
   }
 }
+#textarea,#reply,#reply2{
+  font-size:0.65rem;
+}
+#reply{
+  position: relative;
+  margin-top:-2.2rem;
+}
+#textarea{
+  height:12rem;
+}
+.sendBtn{
+  width: 50%;margin: 0 auto;
+  a{
+    line-height:1.5rem !important;
+    height:1.5rem ;
+    &.gray{
+      background:#ccc;
+    }
+  }
+}

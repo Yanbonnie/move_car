@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/sm.min.css">
+    <link rel="stylesheet" href="css/sm-extend.min.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <title>快捷回复</title>
+</head>
+<body id="index-box">
+<!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
+    <div class="page-group" id="page-group">
+        <!-- 单个page ,第一个.page默认被展示-->
+        <div class="page">
+            <!-- 这里是页面内容区 -->
+            <div class="content send" >
+                <div class="list-block" style="margin:1.75rem;">
+                    <ul>
+                      <!-- Text inputs -->
+                      <li>
+                        <div class="item-content">
+                          <div class="item-media"><i class="icon icon-form-name"></i></div>
+                          <div class="item-inner">
+                            <!-- <div class="item-title label">姓名</div> -->
+                            <div class="item-input">
+                                <input type="text" id="reply2" readonly placeholder="请选择快捷回复内容">
+                                <input type="text" id="reply"  readonly style="opacity: 0">
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      
+                      <li class="align-top">
+                        <div class="item-content">
+                          <div class="item-media"><i class="icon icon-form-comment"></i></div>
+                          <div class="item-inner">
+                            <!-- <div class="item-title label">文本域</div> -->
+                            <div class="item-input">
+                              <textarea placeholder="请输入内容" id="textarea" v-model="msg"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                <div class="sendBtn">                  
+                  <div><a href="javascript:;" class="button  button-fill" :class="[subState?'':'gray']" @click="submitHandle">提交</a></div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/sm.min.js"></script>
+    <script src="js/sm-extend.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script>
+        $(function () {
+            var code = 'abc';
+
+            new Vue({
+                el: "#page-group",
+                data: {
+                    code:code,
+                    msg:'',
+                    subState:true,
+                    replyData:['内容一','内容二','内容三','内容四'],
+                    replyLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_msg'
+                },
+                methods:{
+                    submitHandle:function(){
+                        var This = this;
+                        if(!this.msg){
+                            $.toast("回复内容不能为空");
+                            return;
+                        }
+
+                        $.ajax({
+                            url:this.replyLink,
+                            type:'POST',
+                            data:{
+                                code:this.code,
+                                msg:this.msg
+                            },
+                            dataType:'json',
+                            success:function(res){
+                                if(res.status == 0){
+                                    $.toast('提交成功');
+                                    This.msg = '';
+                                }
+                            }
+                        })
+                    }
+                },
+                mounted:function(){
+                    var This = this;
+                    //保险公司数据
+                    $("#reply").picker({
+                        toolbarTemplate: '<header class="bar bar-nav">\
+                              <button class="button button-link pull-left">取消</button>\
+                              <button class="button button-link pull-right close-picker">确定</button>\
+                              <h1 class="title">回复内容</h1>\
+                              </header>',
+                        cols: [
+                            {
+                                textAlign: 'center',
+                                values: This.replyData
+                            }
+                        ]
+                    });
+
+                    $(document).on('click','.close-picker',function(){
+                        This.msg = $('#reply').val();
+                        $('#reply').val('')
+                       // console.log($('#reply').val())
+                    })
+
+                    $(document).on('click','.pull-left',function(){
+                        $.closeModal(".picker-modal.modal-in")
+                    })
+                    
+                }
+            })
+        })
+    </script>
+</body>
+</html>
