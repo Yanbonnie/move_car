@@ -129,17 +129,27 @@
                             </li>
                         </ul>
                     </div>
+                    <!-- <a href="#" class="open-about">Open About Popup </a> -->
                     <a href="javascript:;" class="button button-fill button-submit" @click="bindingHandle" :class="[submitStatus ? '':'gray']" >提交</a>
 
                 </div>
-            </div>
-        </div>
+            </div>   
+        </div>        
+    </div>
+    <!-- popup -->
+    <div class="popup popup-about">
+      <div class="content-block">
+        <img src="images/erweima.png">
+        <p>此处是文字</p>
+        <p><a href="javascript:;" class="button button-big button-round button-fill" @click="goMove">确定</a></p>
+      </div>
     </div>
     <script src="js/zepto.min.js"></script>
     <script src="js/sm.min.js"></script>
     <script src="js/sm-extend.min.js"></script>
     <script src="js/vue.min.js"></script>
     <script>
+        var follow = 0;
         $(function () {
             new Vue({
                 el: "#page-group",
@@ -158,6 +168,7 @@
                     address:'',      //地址
                     Time:5,
                     is_binding:0,   //绑定状态，1为已绑定，0为未绑定，未绑定⽤用户⽆无权点击 其他⻚页⾯面，只能进入绑定页面
+                    follow:follow,       //关注状态，1为已关注，0位未关注
                     insurance_data:[],  //保险公司列表  name:保险公司名，code：保险公司代码
                     insurance:[],       //保险公司数据
                     // insurance_data:['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
@@ -169,7 +180,10 @@
                     binding:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_binding'
                 },
                 methods:{
-                    go(params){
+                    goMove:function(){
+                        window.location.href="{:url('weixin/Index/move')}";
+                    },
+                    go:function(params){
                         if(this.is_binding==0){
                             $.toast("请先绑定车辆");
                         }else{
@@ -373,8 +387,9 @@
                     }
                 },
                 mounted:function(){
+                    // $.toast("选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司",'1000000')
                     var This = this;
-                    this.getBanner();
+                    // this.getBanner();
                     // $(".swiper-container").swiper({
                     //     pagination: ".swiper-pagination",
                     //     autoplay:2000,
@@ -393,6 +408,12 @@
                             }
                         ]
                     });
+
+                    $(document).on('click','.open-about', function () {
+                        console.log(111)
+                      $.popup('.popup-about');
+                    });
+
                     //输入框自动滚动
                     $(window).resize(function(){
                        setTimeout(function(){
