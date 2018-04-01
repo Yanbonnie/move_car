@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/sm.min.css">
     <link rel="stylesheet" href="css/sm-extend.min.css">
     <link rel="stylesheet" href="font/iconfont.css">
-    <link rel="stylesheet" href="css/style.css">
     <title>绑定车辆</title>
 </head>
 <body id="index-box">
@@ -33,15 +32,6 @@
 
             <!-- 这里是页面内容区 -->
             <div class="content">
-                <!-- Slider -->
-                <div class="swiper-container" data-space-between='10' style="height: 200px;">
-                    <div class="swiper-wrapper" id="swiper-wrapper">
-                         <div class="swiper-slide" @click="goDetail(item)" v-for="(item,index) in bannerList"><img :src="item.pic" alt=""></div>
-                        <!--<div class="swiper-slide"><img src="images/banner.png" alt=""></div>-->
-                        <!--<div class="swiper-slide"><img src="images/banner.png" alt=""></div>-->
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
                 <!--formBox-->
                 <div class="formBox">
                     <div class="list-block">
@@ -89,7 +79,7 @@
                                     <div class="item-inner">
                                         <div class="item-title label"><b>*</b>&nbsp;保险公司</div>
                                         <div class="item-input">
-                                            <input type="text" readonly v-model="safe" placeholder="请选择保险公司名字" id="safe" @focus="inputFocus('#safe')">
+                                            <input type="text" id="insurance" readonly v-model="safe" placeholder="请选择保险公司名字" id="safe" @focus="inputFocus('#safe')">
                                         </div>
                                     </div>
                                 </div>
@@ -131,51 +121,28 @@
                         </ul>
                     </div>
                     <!-- <a href="#" class="open-about">Open About Popup </a> -->
-                    <a href="javascript:;" class="button button-fill button-submit" @click="bindingHandle" :class="[submitStatus ? '':'gray']" >提交</a>
+                    <a href="javascript:;" class="button button-fill button-submit" @click="bindingHandle" :class="[submitStatus ? '':'gray']" >修改资料</a>
 
                 </div>
-            </div>
-        </div>
-        <!-- popup -->
-        <div class="popup popup-about">
-            <div class="content-block">
-                <img src="images/erweima.png">
-                <p>此处是文字</p>
-                <p><a href="javascript:;" class="button button-big button-round button-fill" @click="goMove">确定</a></p>
-            </div>
-        </div>
+            </div>   
+        </div>        
     </div>
-
-
     <!-- popup -->
-    <div class="popup popup-save" id="sortList">
-        <div class="sort_box" ></div>
+    <div class="popup popup-about">
+      <div class="content-block">
+        <img src="images/erweima.png">
+        <p>此处是文字</p>
+        <p><a href="javascript:;" class="button button-big button-round button-fill" @click="goMove">确定</a></p>
+      </div>
     </div>
-    <div class="initials" style="z-index:104001;display: none;">
-        <ul>
-            <li></li>
-        </ul>
-        <div id="letter" ></div>
-    </div>
-    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-    <script>
-        var J = $.noConflict()
-    </script>
     <script src="js/zepto.min.js"></script>
-    <script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
-    <script type="text/javascript" src="js/sort.js"></script>
-
     <script src="js/sm.min.js"></script>
     <script src="js/sm-extend.min.js"></script>
     <script src="js/vue.min.js"></script>
-    <script src="js/sortList.js"></script>
     <script>
         var follow = 0;
         $(function () {
             new Vue({
-
-
-
                 el: "#page-group",
                 data: {
                     scrTop:0,
@@ -198,8 +165,6 @@
                     // insurance_data:['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'],
                     submitStatus:true,
                     bannerList:[],
-                    popupStatus:false,
-                    sortList:sortList,
                     bannerLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_banner',
                     getCodeLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_msgcode',
                     uploadpicLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_uploadpic',
@@ -365,64 +330,14 @@
                             this.code.status = true;
                         }
                     },
-                    goDetail:function(item){
-                        if(item.url){
-                            window.location.href = item.url;
-                        }
-                    },
-                    getBanner:function(){
-                        var This = this;
-                        $.ajax({
-                            url:this.bannerLink,
-                            data:{
-                                page_type:1
-                            },
-                            type:'GET',
-                            dataType:'json',
-                            success:function(res){
-                                if(res.status == 0 ){
-                                    This.bannerList = res.banner_data;
-                                    This.insurance_data = res.insurance_data.map(function(item){
-                                        return item.name
-                                    });
-                                    This.insurance = res.insurance_data;
-                                    if(This.bannerList.length == 1){
-                                        $(".swiper-container").swiper();
-                                    }else{
-                                        setTimeout(function(){
-                                            var imgSrc = $('.swiper-slide').find('img');
-                                            var arrHeight = [];
-                                            for(var i = 0 ; i < imgSrc.length ; i++){
-                                                arrHeight.push(imgSrc.eq(i).height());
-                                            }
-                                            var arrHeight = arrHeight.sort(function(a,b){return a-b});
-                                            $('.swiper-container').css({'height':arrHeight[0]+'px','overflow-y':'hidden'})
-                                            $(".swiper-container").swiper({
-                                                pagination: ".swiper-pagination",
-                                                autoplay:2000,
-                                                loop : true,
-                                            });
-                                        },600)
-                                    }
-                                }
-                            }
-                        })
-                    },
                     inputFocus:function(id){
                        this.scrTop = $(id).offset().top
                     }
                 },
                 mounted:function(){
-                    // $.toast("选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司选择保险公司",'1000000')
                     var This = this;
-                    // this.getBanner();
-                    // $(".swiper-container").swiper({
-                    //     pagination: ".swiper-pagination",
-                    //     autoplay:2000,
-                    //     loop : true,
-                    // });
                     //保险公司数据
-                    /*$("#insurance").picker({
+                    $("#insurance").picker({
                         toolbarTemplate: '<header class="bar bar-nav">\
                               <button class="button button-link pull-right close-picker">确定</button>\
                               <h1 class="title">选择保险公司</h1>\
@@ -433,29 +348,8 @@
                                 values: This.insurance_data
                             }
                         ]
-                    });*/
+                    });
 
-                    /*保险公司*/
-                    var html = '';
-                    for(var i = 0; i < this.sortList.length;i++){
-                        html+='<div class="sort_list" ><div class="num_name" data-code="'+this.sortList[i].code+'">'+this.sortList[i].name+'</div></div>'
-                    }
-                    $('.sort_box').html(html);
-                    initials();
-
-                    $('.num_name').on('click',function(){
-                        var Code = $(this).attr('data-code');
-                        This.insurance_code = Code;
-                        $("#safe").val($(this).text())
-                        $.closeModal('.popup-save');
-                        $('.initials').hide();
-                    })
-
-                    $('#safe').on('click',function () {
-                        $.popup('.popup-save');
-                        $('.initials').show();
-                    })
-                    /*保险公司end*/
                     $(document).on('click','.open-about', function () {
                       $.popup('.popup-about');
                     });

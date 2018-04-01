@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/sm.min.css">
+    <link rel="stylesheet" href="css/sm-extend.min.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <title>我要保险</title>
+</head>
+<body id="index-box">
+<!-- page集合的容器，里面放多个平行的.page，其他.page作为内联页面由路由控制展示 -->
+    <div class="page-group info" id="page-group">
+        <!-- 单个page ,第一个.page默认被展示-->
+        <div class="page">
+            <!-- 工具栏 -->
+            <nav class="bar bar-tab">
+                <a class="tab-item external " href="move.html">
+                    <!--<span class="icon icon-home"></span>-->
+                    <span class="tab-label">我要挪车</span>
+                </a>
+                <a class="tab-item external" href="apply.html">
+                    <!--<span class="icon icon-star"></span>-->
+                    <span class="tab-label">我要申请</span>
+                </a>
+                <a class="tab-item external active" href="javascript:;">
+                    <!--<span class="icon icon-settings"></span>-->
+                    <span class="tab-label">我的信息</span>
+                </a>
+            </nav>
+
+            <!-- 这里是页面内容区 -->
+            <div class="content" >
+                <div class="list-block media-list">
+                    <ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-media"><img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" style='width: 2.2rem;'></div>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">小火</div>
+                                    </div>
+                                    <div class="item-subtitle">车牌：粤A：888888</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="list-block media-list inset">
+                    <ul>
+                        <li>
+                            <a href="javascript:;" class="item-link item-content" @click="go('mydata')">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">我的资料</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="item-link item-content" @click="go('listpage')">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">挪车记录</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">常见问题</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/sm.min.js"></script>
+    <script>
+        new Vue({
+            el:'#page-group',
+            methods:{
+                go:function(url){
+                    window.location.href=url+".html";
+                }
+            }
+        })
+    </script>
+</body>
+</html>

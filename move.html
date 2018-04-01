@@ -85,14 +85,26 @@
                                 </div>
                             </li>
                         </ul>
-                        <p class="tip"><span class="iconfont icon-warning-o" id="tip"></span>服务说明</p>
+                        <p class="tip">
+                            <span class="iconfont icon-warning-o" id="tip"><b>服务说明</b></span>
+                            <span class="iconfont icon-right " :class="[reply ? 'icon-squarecheck':'icon-square']" @click="checkHandle"><b>是否接受回复</b></span> <!--icon-squarecheck-->
+                        </p>
                     </div>
                     <a href="javascript:;" class="button button-fill button-submit" @click="bindingHandle" :class="[submitStatus ? '':'gray']" >提交</a>
 
                 </div>
             </div>
         </div>
+        <!-- popup -->
+        <div class="popup popup-about">
+            <div class="content-block">
+                <img src="images/erweima.png">
+                <p>此处是文字</p>
+                <p><a href="javascript:;" class="button button-big button-round button-fill" @click="goMove">确定</a></p>
+            </div>
+        </div>
     </div>
+
     <script src="js/zepto.min.js"></script>
     <script src="js/sm.min.js"></script>
     <script src="js/sm-extend.min.js"></script>
@@ -109,12 +121,22 @@
                     scene_pic:'',
                     is_binding:0,   //绑定状态，1为已绑定，0为未绑定，未绑定⽤用户⽆无权点击 其他⻚页⾯面，只能进入绑定页面
                     submitStatus:true,
+                    reply:false,
                     bannerList:[],
                     bannerLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/get_banner',
                     uploadpicLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_uploadpic',
                     moveCarLink:'http://test.xhwxpos.com/jiancheng/weixin/Index/post_move_car'
                 },
                 methods:{
+                    //点击确认按钮
+                    goMove:function () {
+                        console.log(123)
+                    },
+                    //点击复选框
+                    checkHandle:function(){
+
+                        $.popup('.popup-about');
+                    },
                     //绑定车辆
                     bindingHandle:function(){
                         if(!this.submitStatus) return;
@@ -270,7 +292,7 @@
                            $(".content").scrollTop(This.scrTop);
                        },30)
                     })
-                    $(document).on('click','.tip', function () {
+                    $(document).on('click','.icon-warning-o', function () {
                         $.alert('Here goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert textHere goes alert text', '服务说明');
                     });
                 }

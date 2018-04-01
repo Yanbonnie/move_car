@@ -66,6 +66,31 @@ body{
       position: relative;
       top: 2px;
       color:#ff503f;
+      b{
+        font-size: 0.65rem;
+        font-weight: normal;
+        line-height: 1.6rem;
+        margin-left: 3px;
+      }
+    }
+    .icon-right{
+      float: right;
+      margin-right: 9%;
+      font-size: 0.75rem;
+      line-height: 1.8rem;
+      &.icon-square{
+
+        color: #acacac;
+      }
+      &.icon-squarecheck{
+        color: #ff503f;
+      }
+      b{
+        margin-left: 5px;
+        font-size: 0.65rem;
+        font-weight: normal;
+        color: #4a4a4a;
+      }
     }
     p{
       line-height: 2rem;
@@ -79,6 +104,26 @@ body{
       text-align:center;
       color:#ff503f;
       display:block;
+      padding: 0;
+      line-height: 2.2rem;
+      span{
+        width: 50%;
+        float: left;
+        text-align: center;
+        &:nth-child(1){
+          position: relative;
+          &:before{
+            width: 1px;
+            background: #efefef;
+            content: '.';
+            font-size: 0;
+            height: 100%;
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+        }
+      }
     }
   }
 }
@@ -143,4 +188,22 @@ body{
       margin:0 auto;
     }
   }
+}
+
+
+//我的信息
+.info{
+  .list-block{
+    font-size: 0.65rem;
+    .item-media{
+      img{
+        @include prefixer(border-radius,100%);
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+.sort_box{
+  position: relative;
 }
