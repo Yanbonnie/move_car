@@ -123,6 +123,23 @@ body{
             top: 0;
           }
         }
+        &.call{
+          color: #0894ec;
+        }
+      }
+    }
+    .card-content-inner{
+      p{
+        &.result{
+          span{
+            color: #0894ec;
+          }
+        }
+        .resultBtn{
+          display: inline-block ;
+          height: 21px;
+          line-height: 21px;
+        }
       }
     }
   }

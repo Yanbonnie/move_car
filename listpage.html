@@ -33,24 +33,29 @@
             <!-- 这里是页面内容区 -->
             <div class="content" >
                 <div class="buttons-tab">
-                    <a href="#tab1" class="tab-link  button" @click="tabIndex = 1">我的挪车</a>
-                    <a href="#tab2" class="tab-link active button" @click="tabIndex = 2">我的车辆</a>
+                    <a href="#tab1" class="tab-link active button" @click="tabIndex = 1">我的挪车</a>
+                    <a href="#tab2" class="tab-link  button" @click="tabIndex = 2">我的车辆</a>
                 </div>
                 <div class="content-block">
                     <div class="tabs">
-                        <div id="tab1" class="tab ">
+                        <div id="tab1" class="tab active">
                             <div class="content-block">
-                                <div class="card"  >
+                                <div class="card">
                                     <div class="card-header">车牌号码:<span>asdfa</span></div>
                                     <div class="card-content">
                                         <div class="card-content-inner">
                                             <p>挪车原因：adas</p>
                                             <p>挪车地点：asdf</p>
                                             <p>挪车时间：asd</p>
+                                            <p class="result">挪车结果：
+                                                <span>成功</span>
+                                                <a href="javascript:;" class="button resultBtn">成功</a>
+                                                <a href="javascript:;" class="button resultBtn">失败</a>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="card-footer" >
-                                        <span>拨打电话</span>
+                                        <span class="call">拨打电话</span>
                                         <span>删除</span>
                                     </div>
                                 </div>
@@ -75,7 +80,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="tab2" class="tab active">
+                        <div id="tab2" class="tab ">
                             <div class="content-block">
                                 <div class="card" v-show="!loading && mycarlog.length == 0">
                                     <div class="card-content">
