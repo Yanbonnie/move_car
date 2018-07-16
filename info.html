@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index.css?v=2">
     <link rel="stylesheet" href="css/sm.min.css">
     <link rel="stylesheet" href="css/sm-extend.min.css">
     <link rel="stylesheet" href="font/iconfont.css">
@@ -69,6 +69,15 @@
                             </a>
                         </li>
                         <li>
+                            <a href="javascript:;" @click="ewmState=true" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">我要申请</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" class="item-link item-content">
                                 <div class="item-inner">
                                     <div class="item-title-row">
@@ -81,6 +90,13 @@
                 </div>
 
             </div>
+            <div class="cover ewmCover" v-show="ewmState">
+                <div class="ewmBox">
+                    <span class="close" @click="ewmState = false"><img src="./images/close.png" alt=""></span>
+                    <img src="./images/ewm.png" alt="">
+                    <p>长按保存</p>
+                </div>
+            </div>
         </div>
     </div>
     <script src="js/zepto.min.js"></script>
@@ -89,6 +105,9 @@
     <script>
         new Vue({
             el:'#page-group',
+            data:{
+                ewmState:false
+            },
             methods:{
                 go:function(url){
                     window.location.href=url+".html";

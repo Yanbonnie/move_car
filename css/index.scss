@@ -224,3 +224,41 @@ body{
 .sort_box{
   position: relative;
 }
+
+
+.cover{
+  position: fixed;
+  background: rgba(0,0,0,0.8);
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  bottom: 0;
+  .ewmBox{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    border-radius: 10px;
+    p{
+      color: #000;
+      text-align: center;
+    }
+    .close{
+      width: REM(50);
+      height: REM(50);
+      position: absolute;
+      left: 50%;
+      margin-left: REMTWO(50);
+      bottom: REMTWO(100);
+    }
+    img{
+      width:80%;
+      display: block;
+      margin: 0 auto;
+      padding-top: 20px;
+    }
+  }
+}
